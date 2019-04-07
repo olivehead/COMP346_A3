@@ -1,5 +1,8 @@
 import java.awt.font.TextHitInfo;
 
+import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
+
 /**
  * Class Monitor
  * To synchronize dining philosophers.
@@ -42,7 +45,7 @@ public class Monitor
 	public synchronized void pickUp(final int piTID) {
 		int i = piTID - 1;
 		state[i] = States.HUNGRY;
-		test(i);
+		test(i, States.EATING);
 		if(state[i] != States.EATING) {
 			try {
 				this.wait();
@@ -59,16 +62,25 @@ public class Monitor
 	public synchronized void putDown(final int piTID) {
 		int i = piTID - 1;
 		state[i] = States.THINKING;
-		test((i - 1) % state.length);
-		test((i + 1) % state.length);
+//		test((i - 1) % state.length);
+//		test((i + 1) % state.length);
 	}
 
 	/**
 	 * Only one philopher at a time is allowed to philosophy
 	 * (while she is not eating).
 	 */
-	public synchronized void requestTalk() {
-		// ...
+	public synchronized void requestTalk(final int piTID) {
+		int i = piTID - 1;
+		state[i] = States.WANTTOTALK;
+		test(i, States.TALKING);
+		if(state[i] != States.TALKING) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
@@ -79,12 +91,35 @@ public class Monitor
 		// ...
 	}
 
-	public synchronized void test(int i) {
-		if(state[(i - 1) % state.length] != States.EATING &&
-		state[(i + 1) % state.length] != States.EATING &&
-		state[i] == States.HUNGRY) {
-			state[i] = States.EATING;
-			this.notifyAll();
+	public synchronized void test(int i, States aState) {
+		if(aState == States.EATING) {
+			if (state[(i - 1) % state.length] != States.EATING &&
+					state[(i + 1) % state.length] != States.EATING &&
+					state[i] == States.HUNGRY) {
+				state[i] = States.EATING;
+				this.notifyAll();
+			}
+		}
+		else if (aState == States.PHILSLEEPING) {
+			for	(int x=0; x<state.length; x++) {
+				if	(state[x] != States.TALKING &&
+						state[x] != States.WANTTOTALK &&
+						state[i] == States.SLEEPY) {
+					state[i] = States.PHILSLEEPING;
+					this.notifyAll();
+				}
+			}
+		}
+		else if (aState == States.TALKING) {
+			for (int x=0; x<state.length; x++) {
+				if (state[x] != States.PHILSLEEPING &&
+						state[x] != States.TALKING &&
+						state[i] == States.WANTTOTALK) {
+					state[i] = States.TALKING;
+					this.notifyAll();
+				}
+			}
+
 		}
 	}
 }
