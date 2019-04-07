@@ -107,10 +107,11 @@ public class Philosopher extends BaseThread {
 			 * A decision is made at random whether this particular
 			 * philosopher is about to say something terribly useful.
 			 */
-			if(true == false) {
-				// Some monitor ops down here...
+			if(true) {
+				DiningPhilosophers.soMonitor.requestTalk(getTID() - 1);
 				talk();
-				// ...
+				DiningPhilosophers.soMonitor.endTalk(getTID() - 1);
+				think();
 			}
 
 			yield();

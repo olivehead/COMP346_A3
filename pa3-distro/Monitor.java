@@ -1,4 +1,3 @@
-import java.util.concurrent.locks.Condition;
 
 /**
  * Class Monitor
@@ -14,7 +13,7 @@ public class Monitor
 	 * ------------
 	 */
 
-	private enum status{eating, hungry, thinking, sleeping, talking}
+	private enum status{eating, hungry, thinking, sleeping, talking, wantToTalk}
 	private status[] state;
 	private int numPhilosophers;
 
@@ -66,23 +65,47 @@ public class Monitor
 	 * Only one philopher at a time is allowed to philosophy
 	 * (while she is not eating).
 	 */
-	public synchronized void requestTalk() {
-		// ...
+	public synchronized void requestTalk(int piTID) {
+		state[piTID] = status.wantToTalk;
+		testTalking(piTID);
+		while(state[piTID] != status.talking) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
 	 * When one philosopher is done talking stuff, others
 	 * can feel free to start talking.
 	 */
-	public synchronized void endTalk() {
-		// ...
+	public synchronized void endTalk(int piTID) {
+		state[piTID] = status.thinking;
+		for(int i = 0; i < numPhilosophers; i++) {
+			testTalking(i);
+		}
 	}
 
-	public synchronized void test(int i) {
+	private synchronized void test(int i) {
 		if(state[(i + numPhilosophers - 1) % numPhilosophers] != status.eating &&
 		state[(i + 1) % state.length] != status.eating &&
 		state[i] == status.hungry) {
 			state[i] = status.eating;
+			this.notifyAll();
+		}
+	}
+
+	private void testTalking(int piTID) {
+		boolean cond = false;
+		for(status s : state) {
+			if(s == status.talking || s == status.sleeping) {
+				cond = true;
+			}
+		}
+		if(!cond && state[piTID] == status.wantToTalk) {
+			state[piTID] = status.talking;
 			this.notifyAll();
 		}
 	}
