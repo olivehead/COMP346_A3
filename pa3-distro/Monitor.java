@@ -16,6 +16,7 @@ public class Monitor
 	public enum States {THINKING, SLEEPY, PHILSLEEPING, HUNGRY, EATING, WANTTOTALK, TALKING};
 	public States[] state;
 //	public int chopsticks;
+    int numPhilosophers;
 
 	/**
 	 * Constructor
@@ -27,6 +28,7 @@ public class Monitor
 		for(int i=0; i<piNumberOfPhilosophers; i++) {
 			state[i] = States.THINKING;
 		}
+		numPhilosophers = piNumberOfPhilosophers;
 	}
 
 	/*
@@ -40,10 +42,9 @@ public class Monitor
 	 * Else forces the philosopher to wait()
 	 */
 	public synchronized void pickUp(final int piTID) {
-		int i = piTID - 1;
-		state[i] = States.HUNGRY;
-		test(i);
-		if(state[i] != States.EATING) {
+		state[piTID] = States.HUNGRY;
+		test(piTID);
+		while(state[piTID] != States.EATING) {
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
@@ -57,30 +58,40 @@ public class Monitor
 	 * and let others know they are available.
 	 */
 	public synchronized void putDown(final int piTID) {
-		int i = piTID - 1;
-		state[i] = States.THINKING;
-		test((i - 1) % state.length);
-		test((i + 1) % state.length);
+		state[piTID] = States.THINKING;
+		test((piTID + numPhilosophers - 1) % numPhilosophers);
+		test((piTID + 1) % numPhilosophers);
 	}
 
 	/**
 	 * Only one philopher at a time is allowed to philosophy
 	 * (while she is not eating).
 	 */
-	public synchronized void requestTalk() {
-		// ...
+	public synchronized void requestTalk(int piTID) {
+		state[piTID] = States.WANTTOTALK;
+		test(piTID);
+		while(state[piTID] != States.TALKING) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
 	 * When one philosopher is done talking stuff, others
 	 * can feel free to start talking.
 	 */
-	public synchronized void endTalk() {
-		// ...
+	public synchronized void endTalk(int piTID) {
+		state[piTID] = States.THINKING;
+		for(int i = 0; i < numPhilosophers; i++) {
+			test(i);
+		}
 	}
 
-	public synchronized void test(int i) {
-		if(state[(i - 1) % state.length] != States.EATING &&
+	private synchronized void test(int i) {
+		if(state[(i + numPhilosophers - 1) % numPhilosophers] != States.EATING &&
 		state[(i + 1) % state.length] != States.EATING &&
 		state[i] == States.HUNGRY) {
 			state[i] = States.EATING;
