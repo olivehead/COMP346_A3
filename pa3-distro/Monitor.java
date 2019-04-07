@@ -43,11 +43,12 @@ public class Monitor
 	 * Else forces the philosopher to wait()
 	 */
 	public synchronized void pickUp(final int piTID) {
-		state[piTID] = status.hungry;
-		test(piTID);
-		if(state[piTID] != status.eating) {
+		int i = piTID - 1;
+		state[i] = status.hungry;
+		test(i);
+		if(state[i] != status.eating) {
 			try {
-				self[piTID].await();
+				this.wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -59,9 +60,10 @@ public class Monitor
 	 * and let others know they are available.
 	 */
 	public synchronized void putDown(final int piTID) {
-		state[piTID] = status.thinking;
-		test((piTID - 1) % state.length);
-		test((piTID + 1) % state.length);
+		int i = piTID - 1;
+		state[i] = status.thinking;
+		test((i - 1) % state.length);
+		test((i + 1) % state.length);
 	}
 
 	/**
@@ -85,7 +87,7 @@ public class Monitor
 		state[(i + 1) % state.length] != status.eating &&
 		state[i] == status.hungry) {
 			state[i] = status.eating;
-			self[i].signal();
+			this.notifyAll();
 		}
 	}
 }
