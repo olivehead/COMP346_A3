@@ -13,6 +13,24 @@ public class Philosopher extends BaseThread
 	 */
 	public static final long TIME_TO_WASTE = 1000;
 
+	public void philSleep()
+	{
+		try
+		{
+			System.out.println("Philosopher " + this.getTID() + " has started sleeping.");
+			yield();
+			sleep((long)(Math.random() * TIME_TO_WASTE)); // define variable TIME_TO_WASTE
+			yield();
+			System.out.println("Philosopher " + this.getTID() + " has finished sleeping.");
+		}
+		catch(InterruptedException e)
+		{
+			System.err.println("Philosopher.eat():");
+			DiningPhilosophers.reportException(e);
+			System.exit(1);
+		}
+	}
+
 	/**
 	 * The act of eating.
 	 * - Print the fact that a given phil (their TID) has started eating.
