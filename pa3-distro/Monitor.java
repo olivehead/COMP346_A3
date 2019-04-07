@@ -14,10 +14,9 @@ public class Monitor
 	 * ------------
 	 */
 
-	private enum status{eating, hungry, thinking, sleeping, talking};
+	private enum status{eating, hungry, thinking, sleeping, talking}
 	private status[] state;
-	private Condition[] self;
-	private int numChopsticks = 0;
+	private int numPhilosophers;
 
 	/**
 	 * Constructor
@@ -25,11 +24,10 @@ public class Monitor
 	public Monitor(int piNumberOfPhilosophers) {
 		// TODO: set appropriate number of chopsticks based on the # of philosophers
 		state = new status[piNumberOfPhilosophers];
-		self = new Condition[piNumberOfPhilosophers];
-		numChopsticks = piNumberOfPhilosophers;
 		for(int i = 0; i < piNumberOfPhilosophers; i++) {
 			state[i] = status.thinking;
 		}
+		numPhilosophers = piNumberOfPhilosophers;
 	}
 
 	/*
@@ -43,10 +41,9 @@ public class Monitor
 	 * Else forces the philosopher to wait()
 	 */
 	public synchronized void pickUp(final int piTID) {
-		int i = piTID - 1;
-		state[i] = status.hungry;
-		test(i);
-		if(state[i] != status.eating) {
+		state[piTID] = status.hungry;
+		test(piTID);
+		while(state[piTID] != status.eating) {
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
@@ -60,10 +57,9 @@ public class Monitor
 	 * and let others know they are available.
 	 */
 	public synchronized void putDown(final int piTID) {
-		int i = piTID - 1;
-		state[i] = status.thinking;
-		test((i - 1) % state.length);
-		test((i + 1) % state.length);
+		state[piTID] = status.thinking;
+		test((piTID + numPhilosophers - 1) % numPhilosophers);
+		test((piTID + 1) % numPhilosophers);
 	}
 
 	/**
@@ -83,7 +79,7 @@ public class Monitor
 	}
 
 	public synchronized void test(int i) {
-		if(state[(i - 1) % state.length] != status.eating &&
+		if(state[(i + numPhilosophers - 1) % numPhilosophers] != status.eating &&
 		state[(i + 1) % state.length] != status.eating &&
 		state[i] == status.hungry) {
 			state[i] = status.eating;
