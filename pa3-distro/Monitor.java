@@ -93,6 +93,25 @@ public class Monitor
 		}
 	}
 
+	public synchronized void startSleep(int piTID) {
+		state[piTID] = States.SLEEPY;
+		test(piTID, States.PHILSLEEPING);
+		while(state[piTID] != States.PHILSLEEPING) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public synchronized void endSleep(int piTID) {
+		state[piTID] = States.THINKING;
+		for(int i = 0; i < numPhilosophers; i++) {
+			test(i, States.PHILSLEEPING);
+		}
+	}
+
 	public synchronized void test(int i, States aState) {
 		if(aState == States.EATING) {
 			if (state[(i + numPhilosophers - 1) % numPhilosophers] != States.EATING &&
