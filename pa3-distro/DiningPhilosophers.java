@@ -4,6 +4,9 @@
  *
  * @author Serguei A. Mokhov, mokhov@cs.concordia.ca
  */
+
+import java.util.Scanner;
+
 public class DiningPhilosophers
 {
 	/*
@@ -46,7 +49,24 @@ public class DiningPhilosophers
 			 * Should be settable from the command line
 			 * or the default if no arguments supplied.
 			 */
-			int iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
+			Scanner keyboard = new Scanner(System.in);
+			int iPhilosophers;
+
+
+			System.out.println("Use default number of philosophers? (y/n)");
+			String answer = keyboard.next();
+			if (answer.equals("y")) {
+				iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
+			}
+			else if (answer.equals("n")) {
+				System.out.println("Enter number of philosopers: ");
+				iPhilosophers = keyboard.nextInt();
+			}
+			else {
+				System.out.println("Not a valid input. Ending program.");
+				return;
+			}
+
 
 			// Make the monitor aware of how many philosophers there are
 			soMonitor = new Monitor(iPhilosophers);

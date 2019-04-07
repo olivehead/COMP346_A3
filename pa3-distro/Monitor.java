@@ -1,3 +1,5 @@
+import java.awt.font.TextHitInfo;
+
 /**
  * Class Monitor
  * To synchronize dining philosophers.
@@ -11,14 +13,20 @@ public class Monitor
 	 * Data members
 	 * ------------
 	 */
-
+	public enum States {THINKING, SLEEPY, PHILSLEEPING, HUNGRY, EATING, WANTTOTALK, TALKING};
+	public States[] state;
+//	public int chopsticks;
 
 	/**
 	 * Constructor
 	 */
 	public Monitor(int piNumberOfPhilosophers)
 	{
-		// TODO: set appropriate number of chopsticks based on the # of philosophers
+		// TODO: set appropriate number of chopsticks based on the # of philosopher
+		state = new States[piNumberOfPhilosophers];
+		for(int i=0; i<piNumberOfPhilosophers; i++) {
+			state[i] = States.THINKING;
+		}
 	}
 
 	/*
@@ -33,7 +41,7 @@ public class Monitor
 	 */
 	public synchronized void pickUp(final int piTID)
 	{
-		// ...
+
 	}
 
 	/**
