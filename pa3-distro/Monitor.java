@@ -112,12 +112,12 @@ public class Monitor
 		}
 	}
 
-	public synchronized void test(int i, States aState) {
+	public synchronized void test(int piTID, States aState) {
 		if(aState == States.EATING) {
-			if (state[(i + numPhilosophers - 1) % numPhilosophers] != States.EATING &&
-					state[(i + 1) % numPhilosophers] != States.EATING &&
-					state[i] == States.HUNGRY) {
-				state[i] = States.EATING;
+			if (state[(piTID + numPhilosophers - 1) % numPhilosophers] != States.EATING &&
+					state[(piTID + 1) % numPhilosophers] != States.EATING &&
+					state[piTID] == States.HUNGRY) {
+				state[piTID] = States.EATING;
 				this.notifyAll();
 			}
 		}
@@ -125,8 +125,8 @@ public class Monitor
 			for	(int x=0; x<numPhilosophers; x++) {
 				if	(state[x] != States.TALKING &&
 						state[x] != States.WANTTOTALK &&
-						state[i] == States.SLEEPY) {
-					state[i] = States.PHILSLEEPING;
+						state[piTID] == States.SLEEPY) {
+					state[piTID] = States.PHILSLEEPING;
 					this.notifyAll();
 				}
 			}
@@ -135,12 +135,11 @@ public class Monitor
 			for (int x=0; x<numPhilosophers; x++) {
 				if (state[x] != States.PHILSLEEPING &&
 						state[x] != States.TALKING &&
-						state[i] == States.WANTTOTALK) {
-					state[i] = States.TALKING;
+						state[piTID] == States.WANTTOTALK) {
+					state[piTID] = States.TALKING;
 					this.notifyAll();
 				}
 			}
-
 		}
 	}
 }

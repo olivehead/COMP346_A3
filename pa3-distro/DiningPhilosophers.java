@@ -1,3 +1,4 @@
+
 /**
  * Class DiningPhilosophers
  * The main starter.
@@ -30,6 +31,8 @@ public class DiningPhilosophers
 	 * Our shared monitor for the philosphers to consult
 	 */
 	public static Monitor soMonitor = null;
+
+	public static Philosopher aoPhilosophers[] = null;
 
 	/*
 	 * -------
@@ -72,7 +75,8 @@ public class DiningPhilosophers
 			soMonitor = new Monitor(iPhilosophers);
 
 			// Space for all the philosophers
-			Philosopher aoPhilosophers[] = new Philosopher[iPhilosophers];
+			//Philosopher aoPhilosophers[] = new Philosopher[iPhilosophers];
+			aoPhilosophers = new Philosopher[iPhilosophers];
 
 			// Let 'em sit down
 			for(int j = 0; j < iPhilosophers; j++)
