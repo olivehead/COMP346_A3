@@ -157,9 +157,7 @@ public class Monitor
 					this.notifyAll();
 				}
 			}
-
 		}
-
 	}
 }
 

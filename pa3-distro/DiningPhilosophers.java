@@ -1,3 +1,4 @@
+
 /**
  * Class DiningPhilosophers
  * The main starter.
@@ -31,6 +32,8 @@ public class DiningPhilosophers
 	 */
 	public static Monitor soMonitor = null;
 
+	//public static Philosopher aoPhilosophers[] = null;
+
 	/*
 	 * -------
 	 * Methods
@@ -50,22 +53,39 @@ public class DiningPhilosophers
 			 * or the default if no arguments supplied.
 			 */
 			Scanner keyboard = new Scanner(System.in);
-			int iPhilosophers;
+			int iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
 
-
-			System.out.println("Use default number of philosophers? (y/n)");
-			String answer = keyboard.next();
-			if (answer.equals("y")) {
+			System.out.print("%java DiningPhilosophers ");
+			String answer = keyboard.nextLine();
+			try {
+				iPhilosophers = Integer.parseInt(answer);
+				if(iPhilosophers > 0) {
+					System.out.println("Usage: java DiningPhilosophers[" + iPhilosophers + "]\n%\n");
+				}
+				else {
+					iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
+					System.out.println("\"" + answer + "\" is not a positive decimal integer\n");
+					System.out.println("Usage: java DiningPhilosophers[" + DEFAULT_NUMBER_OF_PHILOSOPHERS + "]\n%\n");
+				}
+			}
+			catch(Exception e) {
 				iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
+				System.out.println("\"" + answer + "\" is not a positive decimal integer\n");
+				System.out.println("Usage: java DiningPhilosophers[" + DEFAULT_NUMBER_OF_PHILOSOPHERS + "]\n%\n");
 			}
-			else if (answer.equals("n")) {
-				System.out.println("Enter number of philosopers: ");
-				iPhilosophers = keyboard.nextInt();
-			}
-			else {
-				System.out.println("Not a valid input. Ending program.");
-				return;
-			}
+//			System.out.println("Use default number of philosophers? (y/n)");
+//			String answer = keyboard.next();
+//			if (answer.equals("y")) {
+//				iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
+//			}
+//			else if (answer.equals("n")) {
+//				System.out.println("Enter number of philosopers: ");
+//				iPhilosophers = keyboard.nextInt();
+//			}
+//			else {
+//				System.out.println("Not a valid input. Ending program.");
+//				return;
+//			}
 
 
 			// Make the monitor aware of how many philosophers there are
@@ -73,6 +93,7 @@ public class DiningPhilosophers
 
 			// Space for all the philosophers
 			Philosopher aoPhilosophers[] = new Philosopher[iPhilosophers];
+			//aoPhilosophers = new Philosopher[iPhilosophers];
 
 			// Let 'em sit down
 			for(int j = 0; j < iPhilosophers; j++)
