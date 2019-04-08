@@ -1,8 +1,10 @@
 import common.BaseThread;
 
+import java.util.concurrent.TimeUnit;
+
 /**
  * Class Philosopher.
- * Outlines main subrutines of our virtual philosopher.
+ * Outlines main subroutines of our virtual philosopher.
  *
  * @author Serguei A. Mokhov, mokhov@cs.concordia.ca
  */
@@ -10,9 +12,9 @@ public class Philosopher extends BaseThread {
 	/**
 	 * Max time an action can take (in milliseconds)
 	 */
-	public static final long TIME_TO_WASTE = 1000;
+	private static final long TIME_TO_WASTE = 1000;
 
-	public void philSleep() {
+	private void philSleep() {
 		try {
 			System.out.println("Philosopher " + this.getTID() + " has started sleeping.");
 			yield();
@@ -35,7 +37,7 @@ public class Philosopher extends BaseThread {
 	 * - yield
 	 * - The print that they are done eating.
 	 */
-	public void eat() {
+	private void eat() {
 		try {
 			System.out.println("Philosopher " + this.getTID() + " has started eating.");
 			yield();
@@ -58,7 +60,7 @@ public class Philosopher extends BaseThread {
 	 * - yield
 	 * - The print that they are done thinking.
 	 */
-	public void think() {
+	private void think() {
 		try {
 			System.out.println("Philosopher " + this.getTID() + " has started thinking.");
 			yield();
@@ -81,7 +83,7 @@ public class Philosopher extends BaseThread {
 	 * - yield
 	 * - The print that they are done talking.
 	 */
-	public void talk() {
+	private void talk() {
 		System.out.println("Philosopher " + this.getTID() + " has started talking.");
 		yield();
 		saySomething();
@@ -127,7 +129,7 @@ public class Philosopher extends BaseThread {
 	 * Prints out a phrase from the array of phrases at random.
 	 * Feel free to add your own phrases.
 	 */
-	public void saySomething() {
+	private void saySomething() {
 		String[] astrPhrases = {
 			"Eh, it's not easy to be a philosopher: eat, think, talk, eat...",
 			"You know, true is false and false is true if you think of it",
@@ -139,7 +141,11 @@ public class Philosopher extends BaseThread {
 		System.out.println(
 			"Philosopher " + getTID() + " says: " +
 			astrPhrases[(int)(Math.random() * astrPhrases.length)]
+
 		);
+		for(int i = 0; i < 1000000000; i++) {
+
+		}
 	}
 }
 

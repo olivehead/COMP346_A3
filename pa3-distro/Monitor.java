@@ -1,8 +1,3 @@
-import java.awt.font.TextHitInfo;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
-
 /**
  * Class Monitor
  * To synchronize dining philosophers.
@@ -16,17 +11,17 @@ public class Monitor
 	 * Data members
 	 * ------------
 	 */
-	public enum States {THINKING, SLEEPY, PHILSLEEPING, HUNGRY, EATING, WANTTOTALK, TALKING, REQUESTSHAKER, SHAKING};
-	public States[] state;
+	public enum States {THINKING, SLEEPY, PHILSLEEPING, HUNGRY, EATING, WANTTOTALK, TALKING, REQUESTSHAKER, SHAKING}
+	private States[] state;
 //	public int chopsticks;
-    int numPhilosophers;
-    private static int shakerCounter = 0;
-    final static int MAX_SHAKER_NUUMBER = 2;
+    private int numPhilosophers;
+    private static int shakerCounter;
+    private final static int MAX_SHAKER_NUMBER = 2;
 
 	/**
 	 * Constructor
 	 */
-	public Monitor(int piNumberOfPhilosophers)
+    Monitor(int piNumberOfPhilosophers)
 	{
 		// TODO: set appropriate number of chopsticks based on the # of philosopher
 		state = new States[piNumberOfPhilosophers];
@@ -34,6 +29,7 @@ public class Monitor
 			state[i] = States.THINKING;
 		}
 		numPhilosophers = piNumberOfPhilosophers;
+		shakerCounter = 0;
 	}
 
 	/*
@@ -46,12 +42,12 @@ public class Monitor
 	 * Grants request (returns) to eat when both chopsticks/forks are available.
 	 * Else forces the philosopher to wait()
 	 */
-	public synchronized void pickUp(final int piTID) {
+	synchronized void pickUp(final int piTID) {
 		state[piTID] = States.HUNGRY;
 		test(piTID, States.EATING);
 		while(state[piTID] != States.EATING) {
 			try {
-				this.wait();
+				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -59,25 +55,25 @@ public class Monitor
 	}
 
 	/**
-	 * When a given philosopher's done eating, they put the chopstiks/forks down
+	 * When a given philosopher's done eating, they put the chopsticks/forks down
 	 * and let others know they are available.
 	 */
-	public synchronized void putDown(final int piTID) {
+	synchronized void putDown(final int piTID) {
 		state[piTID] = States.THINKING;
 		test((piTID + numPhilosophers - 1) % numPhilosophers, States.EATING);
 		test((piTID + 1) % numPhilosophers, States.EATING);
 	}
 
 	/**
-	 * Only one philopher at a time is allowed to philosophy
+	 * Only one philosopher at a time is allowed to philosophy
 	 * (while she is not eating).
 	 */
-	public synchronized void requestTalk(int piTID) {
+	synchronized void requestTalk(int piTID) {
 		state[piTID] = States.WANTTOTALK;
 		test(piTID, States.TALKING);
 		while(state[piTID] != States.TALKING) {
 			try {
-				this.wait();
+				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -88,26 +84,26 @@ public class Monitor
 	 * When one philosopher is done talking stuff, others
 	 * can feel free to start talking.
 	 */
-	public synchronized void endTalk(int piTID) {
+	synchronized void endTalk(int piTID) {
 		state[piTID] = States.THINKING;
 		for(int i = 0; i < numPhilosophers; i++) {
 			test(i, States.TALKING);
 		}
 	}
 
-	public synchronized void startSleep(int piTID) {
+	synchronized void startSleep(int piTID) {
 		state[piTID] = States.SLEEPY;
 		test(piTID, States.PHILSLEEPING);
 		while(state[piTID] != States.PHILSLEEPING) {
 			try {
-				this.wait();
+				wait();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
 	}
 
-	public synchronized void endSleep(int piTID) {
+	synchronized void endSleep(int piTID) {
 		state[piTID] = States.THINKING;
 		for(int i = 0; i < numPhilosophers; i++) {
 			test(i, States.PHILSLEEPING);
@@ -115,27 +111,43 @@ public class Monitor
 	}
 
 	public synchronized void requestShaker(int piTID) {
-		state[piTID] = States.REQUESTSHAKER;
-		if (shakerCounter < MAX_SHAKER_NUUMBER) {
-			shakerCounter++;
-		}
-		//TEST FOR SHAKER
+        if(state[piTID] == States.EATING) {
+            state[piTID] = States.REQUESTSHAKER;
+            test(piTID, States.SHAKING);
+            while(state[piTID] != States.SHAKING) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 	}
+
+	public synchronized void endShaker(int piTID) {
+	    state[piTID] = States.THINKING;
+	    shakerCounter--;
+        for(int i = 0; i < numPhilosophers; i++) {
+            test(i, States.REQUESTSHAKER);
+        }
+    }
 
 	//IMPLEMENT RETURNSHAKER
 
-	public synchronized void test(int i, States aState) {
+	private synchronized void test(int i, States aState) {
 		if(aState == States.EATING) {
 			int prevPhilosopher = (i + numPhilosophers - 1) % numPhilosophers;
 			int nextPhilosopher = (i + 1) % numPhilosophers;
 			if (state[prevPhilosopher] != States.EATING &&
 					state[nextPhilosopher] != States.EATING &&
+                    state[prevPhilosopher] != States.SHAKING &&
+                    state[nextPhilosopher] != States.SHAKING &&
 					state[i] == States.HUNGRY) {
-				if (!(state[prevPhilosopher] == States.HUNGRY) && i > prevPhilosopher ||
-						!(state[nextPhilosopher] == States.HUNGRY) && i > prevPhilosopher) {
+				//if ((state[prevPhilosopher] != States.HUNGRY && i < prevPhilosopher) ||
+                //        (state[nextPhilosopher] != States.HUNGRY && i < nextPhilosopher)) {
 					state[i] = States.EATING;
-					this.notifyAll();
-				}
+					notifyAll();
+				//}
 			}
 		}
 		else if (aState == States.PHILSLEEPING) {
@@ -144,7 +156,7 @@ public class Monitor
 						state[x] != States.WANTTOTALK &&
 						state[i] == States.SLEEPY) {
 					state[i] = States.PHILSLEEPING;
-					this.notifyAll();
+					notifyAll();
 				}
 			}
 		}
@@ -154,10 +166,17 @@ public class Monitor
 						state[x] != States.TALKING &&
 						state[i] == States.WANTTOTALK) {
 					state[i] = States.TALKING;
-					this.notifyAll();
+					notifyAll();
 				}
 			}
 		}
+		else if(aState == States.SHAKING) {
+		    if(state[i] == States.REQUESTSHAKER && shakerCounter < MAX_SHAKER_NUMBER) {
+		        shakerCounter++;
+		        state[i] = States.SHAKING;
+		        notifyAll();
+            }
+        }
 	}
 }
 

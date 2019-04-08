@@ -1,13 +1,12 @@
 
+import java.util.Scanner;
+
 /**
  * Class DiningPhilosophers
  * The main starter.
  *
  * @author Serguei A. Mokhov, mokhov@cs.concordia.ca
  */
-
-import java.util.Scanner;
-
 public class DiningPhilosophers
 {
 	/*
@@ -19,18 +18,18 @@ public class DiningPhilosophers
 	/**
 	 * This default may be overridden from the command line
 	 */
-	public static final int DEFAULT_NUMBER_OF_PHILOSOPHERS = 4;
+	private static final int DEFAULT_NUMBER_OF_PHILOSOPHERS = 4;
 
 	/**
 	 * Dining "iterations" per philosopher thread
 	 * while they are socializing there
 	 */
-	public static final int DINING_STEPS = 10;
+	static final int DINING_STEPS = 10;
 
 	/**
-	 * Our shared monitor for the philosphers to consult
+	 * Our shared monitor for the philosophers to consult
 	 */
-	public static Monitor soMonitor = null;
+	static Monitor soMonitor = null;
 
 	//public static Philosopher aoPhilosophers[] = null;
 
@@ -53,7 +52,7 @@ public class DiningPhilosophers
 			 * or the default if no arguments supplied.
 			 */
 			Scanner keyboard = new Scanner(System.in);
-			int iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
+			int iPhilosophers;
 
 			System.out.print("%java DiningPhilosophers ");
 			String answer = keyboard.nextLine();
@@ -79,7 +78,7 @@ public class DiningPhilosophers
 //				iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
 //			}
 //			else if (answer.equals("n")) {
-//				System.out.println("Enter number of philosopers: ");
+//				System.out.println("Enter number of philosophers: ");
 //				iPhilosophers = keyboard.nextInt();
 //			}
 //			else {
@@ -92,7 +91,7 @@ public class DiningPhilosophers
 			soMonitor = new Monitor(iPhilosophers);
 
 			// Space for all the philosophers
-			Philosopher aoPhilosophers[] = new Philosopher[iPhilosophers];
+			Philosopher[] aoPhilosophers = new Philosopher[iPhilosophers];
 			//aoPhilosophers = new Philosopher[iPhilosophers];
 
 			// Let 'em sit down
@@ -127,7 +126,7 @@ public class DiningPhilosophers
 	 * Outputs exception information to STDERR
 	 * @param poException Exception object to dump to STDERR
 	 */
-	public static void reportException(Exception poException)
+	static void reportException(Exception poException)
 	{
 		System.err.println("Caught exception : " + poException.getClass().getName());
 		System.err.println("Message          : " + poException.getMessage());
