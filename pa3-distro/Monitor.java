@@ -16,10 +16,12 @@ public class Monitor
 	 * Data members
 	 * ------------
 	 */
-	public enum States {THINKING, SLEEPY, PHILSLEEPING, HUNGRY, EATING, WANTTOTALK, TALKING};
+	public enum States {THINKING, SLEEPY, PHILSLEEPING, HUNGRY, EATING, WANTTOTALK, TALKING, REQUESTSHAKER, SHAKING};
 	public States[] state;
 //	public int chopsticks;
     int numPhilosophers;
+    private static int shakerCounter = 0;
+    final static int MAX_SHAKER_NUUMBER = 2;
 
 	/**
 	 * Constructor
@@ -112,13 +114,28 @@ public class Monitor
 		}
 	}
 
+	public synchronized void requestShaker(int piTID) {
+		state[piTID] = States.REQUESTSHAKER;
+		if (shakerCounter < MAX_SHAKER_NUUMBER) {
+			shakerCounter++;
+		}
+		//TEST FOR SHAKER
+	}
+
+	//IMPLEMENT RETURNSHAKER
+
 	public synchronized void test(int i, States aState) {
 		if(aState == States.EATING) {
-			if (state[(i + numPhilosophers - 1) % numPhilosophers] != States.EATING &&
-					state[(i + 1) % numPhilosophers] != States.EATING &&
+			int prevPhilosopher = (i + numPhilosophers - 1) % numPhilosophers;
+			int nextPhilosopher = (i + 1) % numPhilosophers;
+			if (state[prevPhilosopher] != States.EATING &&
+					state[nextPhilosopher] != States.EATING &&
 					state[i] == States.HUNGRY) {
-				state[i] = States.EATING;
-				this.notifyAll();
+				if (!(state[prevPhilosopher] == States.HUNGRY) && i > prevPhilosopher ||
+						!(state[nextPhilosopher] == States.HUNGRY) && i > prevPhilosopher) {
+					state[i] = States.EATING;
+					this.notifyAll();
+				}
 			}
 		}
 		else if (aState == States.PHILSLEEPING) {
@@ -142,6 +159,7 @@ public class Monitor
 			}
 
 		}
+
 	}
 }
 
