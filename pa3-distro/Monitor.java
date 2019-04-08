@@ -12,14 +12,14 @@ import static java.lang.Boolean.TRUE;
 public class Monitor
 {
 	/*
-	 * ------------
-	 * Data members
-	 * ------------
-	 */
-	public enum States {THINKING, SLEEPY, PHILSLEEPING, HUNGRY, EATING, WANTTOTALK, TALKING};
+ * ------------
+ * Data members
+ * ------------
+ */
+	public enum States {THINKING, SLEEPY, PHILSLEEPING, HUNGRY, EATING, WANTTOTALK, TALKING, WANTTOSHAKE, SHAKING};
 	public States[] state;
-//	public int chopsticks;
-    int numPhilosophers;
+	//	public int chopsticks;
+	private int numPhilosophers;
 
 	/**
 	 * Constructor
@@ -47,7 +47,8 @@ public class Monitor
 	public synchronized void pickUp(final int piTID) {
 		state[piTID] = States.HUNGRY;
 		test(piTID, States.EATING);
-		while(state[piTID] != States.EATING) {
+		while(state[piTID] != States.EATING/* || (state[(piTID + 1) % numPhilosophers] == States.HUNGRY && (piTID + 1) % numPhilosophers < piTID)
+				|| (state[(piTID + numPhilosophers - 1) % numPhilosophers] == States.HUNGRY && (piTID + numPhilosophers - 1) % numPhilosophers < piTID)*/) {
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
@@ -112,6 +113,25 @@ public class Monitor
 		}
 	}
 
+//	public synchronized void requestShake(int piTID) {
+//		state[piTID] = States.WANTTOSHAKE;
+//		test(piTID, States.SHAKING);
+//		while(state[piTID] != States.SHAKING) {
+//			try {
+//				this.wait();
+//			} catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		}
+//	}
+//
+//	public synchronized void endShake(int piTID) {
+//		state[piTID] = States.THINKING;
+//		for(int i = 0; i < numPhilosophers; i++) {
+//			test(i, States.SHAKING);
+//		}
+//	}
+
 	public synchronized void test(int piTID, States aState) {
 		if(aState == States.EATING) {
 			if (state[(piTID + numPhilosophers - 1) % numPhilosophers] != States.EATING &&
@@ -141,6 +161,9 @@ public class Monitor
 				}
 			}
 		}
+//		else if (aState == States.SHAKING) {
+//
+//		}
 	}
 }
 
