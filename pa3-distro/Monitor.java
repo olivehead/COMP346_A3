@@ -4,19 +4,17 @@
  *
  * @author Serguei A. Mokhov, mokhov@cs.concordia.ca
  */
-public class Monitor
+class Monitor
 {
 	/*
 	 * ------------
 	 * Data members
 	 * ------------
 	 */
-	public enum States {THINKING, SLEEPY, PHILSLEEPING, HUNGRY, EATING, WANTTOTALK, TALKING, REQUESTSHAKER, SHAKING}
+	public enum States {THINKING, SLEEPY, PHILSLEEPING, HUNGRY, EATING, WANTTOTALK, TALKING, AVAILABLE, TAKEN}
 	private States[] state;
-//	public int chopsticks;
-    private int numPhilosophers;
-    private static int shakerCounter;
-    private final static int MAX_SHAKER_NUMBER = 2;
+	private States[] shakers;
+	private int numPhilosophers;
 
 	/**
 	 * Constructor
@@ -25,11 +23,13 @@ public class Monitor
 	{
 		// TODO: set appropriate number of chopsticks based on the # of philosopher
 		state = new States[piNumberOfPhilosophers];
+		shakers = new States[2];
+		shakers[0] = States.AVAILABLE;
+		shakers[1] = States.AVAILABLE;
 		for(int i=0; i<piNumberOfPhilosophers; i++) {
 			state[i] = States.THINKING;
 		}
 		numPhilosophers = piNumberOfPhilosophers;
-		shakerCounter = 0;
 	}
 
 	/*
@@ -110,26 +110,34 @@ public class Monitor
 		}
 	}
 
-	public synchronized void requestShaker(int piTID) {
-        //if(state[piTID] == States.EATING) {
-            state[piTID] = States.REQUESTSHAKER;
-            test(piTID, States.SHAKING);
-            while(state[piTID] != States.SHAKING) {
-                try {
-                    wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-        //}
+	synchronized void requestShaker() {
+		while (shakers[0] != States.AVAILABLE
+				&& shakers[1] != States.AVAILABLE) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				System.err.println("Monitor.takeShaker():");
+				DiningPhilosophers.reportException(e);
+				System.exit(1);
+			}
+		}
+		if (shakers[0] == States.AVAILABLE) {
+			shakers[0] = States.TAKEN;
+		} else {
+			shakers[1] = States.TAKEN;
+		}
 	}
 
-	public synchronized void endShaker(int piTID) {
-	    state[piTID] = States.THINKING;
-	    shakerCounter--;
-        for(int i = 0; i < numPhilosophers; i++) {
-            test(i, States.REQUESTSHAKER);
-        }
+	synchronized void endShaker() {
+		if (shakers[0] == States.TAKEN) {
+			shakers[0] = States.AVAILABLE;
+		} else if (shakers[1] == States.TAKEN) {
+			shakers[1] = States.AVAILABLE;
+		} else {
+			System.err.println("Monitor.returnShaker(): something went wrong!");
+		}
+
+		notifyAll();
     }
 
 	//IMPLEMENT RETURNSHAKER
@@ -140,8 +148,8 @@ public class Monitor
 			int nextPhilosopher = (i + 1) % numPhilosophers;
 			if (state[prevPhilosopher] != States.EATING &&
 					state[nextPhilosopher] != States.EATING &&
-                    state[prevPhilosopher] != States.SHAKING &&
-					state[nextPhilosopher] != States.SHAKING &&
+                    //state[prevPhilosopher] != States.SHAKING &&
+					//state[nextPhilosopher] != States.SHAKING &&
 					state[i] == States.HUNGRY) {
 				if ((state[prevPhilosopher] != States.HUNGRY || i > prevPhilosopher) &&
 				     (state[nextPhilosopher] != States.HUNGRY || i > nextPhilosopher)) {
@@ -170,13 +178,6 @@ public class Monitor
 				}
 			}
 		}
-		else if(aState == States.SHAKING) {
-			if (state[i] == States.REQUESTSHAKER && shakerCounter < MAX_SHAKER_NUMBER) {
-				shakerCounter++;
-				state[i] = States.SHAKING;
-				notifyAll();
-			}
-        }
 	}
 }
 

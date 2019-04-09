@@ -1,7 +1,5 @@
 import common.BaseThread;
-
 import java.util.Random;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Class Philosopher.
@@ -114,9 +112,9 @@ public class Philosopher extends BaseThread {
 	public void run() {
 		for(int i = 0; i < DiningPhilosophers.DINING_STEPS; i++) {
 			DiningPhilosophers.soMonitor.pickUp(getTID() - 1);
-			DiningPhilosophers.soMonitor.requestShaker(getTID() - 1);
+			DiningPhilosophers.soMonitor.requestShaker();
 			shake();
-			DiningPhilosophers.soMonitor.endShaker(getTID() - 1);
+			DiningPhilosophers.soMonitor.endShaker();
 			eat();
 			DiningPhilosophers.soMonitor.putDown(getTID() - 1);
 			think();
@@ -161,9 +159,6 @@ public class Philosopher extends BaseThread {
 			astrPhrases[(int)(Math.random() * astrPhrases.length)]
 
 		);
-		for(int i = 0; i < 1000000000; i++) {
-
-		}
 	}
 }
 
