@@ -43,10 +43,6 @@ public class Philosopher extends BaseThread {
 		try {
 			System.out.println("Philosopher " + this.getTID() + " has started eating.");
 			yield();
-			DiningPhilosophers.soMonitor.requestShaker(getTID() - 1);
-			shake();
-			DiningPhilosophers.soMonitor.endShaker(getTID() - 1);
-			think();
 			sleep((long)(Math.random() * TIME_TO_WASTE)); // define variable TIME_TO_WASTE
 			yield();
 			System.out.println("Philosopher " + this.getTID() + " has finished eating.");
@@ -118,11 +114,11 @@ public class Philosopher extends BaseThread {
 	public void run() {
 		for(int i = 0; i < DiningPhilosophers.DINING_STEPS; i++) {
 			DiningPhilosophers.soMonitor.pickUp(getTID() - 1);
-
+			DiningPhilosophers.soMonitor.requestShaker(getTID() - 1);
+			shake();
+			DiningPhilosophers.soMonitor.endShaker(getTID() - 1);
 			eat();
-
 			DiningPhilosophers.soMonitor.putDown(getTID() - 1);
-
 			think();
 
 			/*
@@ -143,12 +139,6 @@ public class Philosopher extends BaseThread {
 				DiningPhilosophers.soMonitor.endSleep(getTID() - 1);
 				think();
 			}
-//			else if(n == 2) {
-//				DiningPhilosophers.soMonitor.requestShaker(getTID() - 1);
-//				shake();
-//				DiningPhilosophers.soMonitor.endShaker(getTID() - 1);
-//				think();
-//			}
 			yield();
 		}
 	} // run()

@@ -141,13 +141,13 @@ public class Monitor
 			if (state[prevPhilosopher] != States.EATING &&
 					state[nextPhilosopher] != States.EATING &&
                     state[prevPhilosopher] != States.SHAKING &&
-                    state[nextPhilosopher] != States.SHAKING &&
+					state[nextPhilosopher] != States.SHAKING &&
 					state[i] == States.HUNGRY) {
-				//if ((state[prevPhilosopher] != States.HUNGRY && i < prevPhilosopher) ||
-                //        (state[nextPhilosopher] != States.HUNGRY && i < nextPhilosopher)) {
+				if ((state[prevPhilosopher] != States.HUNGRY || i > prevPhilosopher) &&
+				     (state[nextPhilosopher] != States.HUNGRY || i > nextPhilosopher)) {
 					state[i] = States.EATING;
 					notifyAll();
-				//}
+				}
 			}
 		}
 		else if (aState == States.PHILSLEEPING) {

@@ -72,20 +72,6 @@ public class DiningPhilosophers
 				System.out.println("\"" + answer + "\" is not a positive decimal integer\n");
 				System.out.println("Usage: java DiningPhilosophers[" + DEFAULT_NUMBER_OF_PHILOSOPHERS + "]\n%\n");
 			}
-//			System.out.println("Use default number of philosophers? (y/n)");
-//			String answer = keyboard.next();
-//			if (answer.equals("y")) {
-//				iPhilosophers = DEFAULT_NUMBER_OF_PHILOSOPHERS;
-//			}
-//			else if (answer.equals("n")) {
-//				System.out.println("Enter number of philosophers: ");
-//				iPhilosophers = keyboard.nextInt();
-//			}
-//			else {
-//				System.out.println("Not a valid input. Ending program.");
-//				return;
-//			}
-
 
 			// Make the monitor aware of how many philosophers there are
 			soMonitor = new Monitor(iPhilosophers);
@@ -94,18 +80,18 @@ public class DiningPhilosophers
 			Philosopher[] aoPhilosophers = new Philosopher[iPhilosophers];
 			//aoPhilosophers = new Philosopher[iPhilosophers];
 
+			System.out.println
+					(
+							iPhilosophers +
+									" philosopher(s) came in for a dinner."
+					);
+
 			// Let 'em sit down
 			for(int j = 0; j < iPhilosophers; j++)
 			{
 				aoPhilosophers[j] = new Philosopher();
 				aoPhilosophers[j].start();
 			}
-
-			System.out.println
-			(
-				iPhilosophers +
-				" philosopher(s) came in for a dinner."
-			);
 
 			// Main waits for all its children to die...
 			// I mean, philosophers to finish their dinner.
