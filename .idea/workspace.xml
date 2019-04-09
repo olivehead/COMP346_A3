@@ -2,13 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a64e8f33-c4d9-47d6-bc17-142c45e96839" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/Hubert.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/COMP346_A3/DiningPhilosophers.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/COMP346_A3/DiningPhilosophers.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/COMP346_A3/Monitor$States.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/COMP346_A3/Monitor$States.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/COMP346_A3/Monitor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/COMP346_A3/Monitor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/COMP346_A3/Philosopher.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/COMP346_A3/Philosopher.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pa3-distro/DiningPhilosophers.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa3-distro/DiningPhilosophers.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pa3-distro/Monitor.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa3-distro/Monitor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/pa3-distro/Philosopher.java" beforeDir="false" afterPath="$PROJECT_DIR$/pa3-distro/Philosopher.java" afterDir="false" />
     </list>
@@ -30,17 +24,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pa3-distro/DiningPhilosophers.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-816">
+            <state relative-caret-position="-1003">
               <caret line="54" selection-start-line="54" selection-end-line="54" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/pa3-distro/Philosopher.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="162">
-              <caret line="147" column="12" selection-start-line="147" selection-start-column="12" selection-end-line="147" selection-end-column="12" />
+            <state relative-caret-position="111">
+              <caret line="48" column="20" selection-start-line="48" selection-start-column="20" selection-end-line="48" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -48,11 +42,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/pa3-distro/Monitor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1260">
-              <caret line="151" column="9" lean-forward="true" selection-start-line="151" selection-start-column="9" selection-end-line="151" selection-end-column="9" />
+            <state relative-caret-position="275">
+              <caret line="179" column="13" selection-start-line="179" selection-start-column="13" selection-end-line="179" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -81,8 +75,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/pa3-distro/DiningPhilosophers.java" />
-        <option value="$PROJECT_DIR$/pa3-distro/Monitor.java" />
         <option value="$PROJECT_DIR$/pa3-distro/Philosopher.java" />
+        <option value="$PROJECT_DIR$/pa3-distro/Monitor.java" />
       </list>
     </option>
   </component>
@@ -97,6 +91,7 @@
     </navigator>
     <panes>
       <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -113,7 +108,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -162,11 +156,12 @@
       <updated>1554662154906</updated>
       <workItem from="1554662179223" duration="5413000" />
       <workItem from="1554747584578" duration="1657000" />
+      <workItem from="1554758680623" duration="1165000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="28457000" />
+    <option name="totallyTimeSpent" value="30460000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -181,7 +176,7 @@
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1442953" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14630872" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24966443" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -190,15 +185,15 @@
       <window_info id="Favorites" order="6" side_tool="true" weight="0.3295302" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.43767706" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.4220963" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" weight="0.3286119" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Database Changes" order="8" />
-      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.49932885" weight="0.56373936" />
-      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50067115" side_tool="true" weight="0.3286119" />
+      <window_info anchor="bottom" id="Terminal" order="9" sideWeight="0.4986577" weight="0.39518413" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5013423" side_tool="true" weight="0.2592068" />
       <window_info anchor="bottom" id="Version Control" order="11" weight="0.33286119" />
       <window_info anchor="bottom" id="Messages" order="12" weight="0.53257793" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -225,25 +220,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/pa3-distro/DiningPhilosophers.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-816">
+        <state relative-caret-position="-1003">
           <caret line="54" selection-start-line="54" selection-end-line="54" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pa3-distro/Monitor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1260">
-          <caret line="151" column="9" lean-forward="true" selection-start-line="151" selection-start-column="9" selection-end-line="151" selection-end-column="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/pa3-distro/Philosopher.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="147" column="12" selection-start-line="147" selection-start-column="12" selection-end-line="147" selection-end-column="12" />
+        <state relative-caret-position="111">
+          <caret line="48" column="20" selection-start-line="48" selection-start-column="20" selection-end-line="48" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pa3-distro/Monitor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="179" column="13" selection-start-line="179" selection-start-column="13" selection-end-line="179" selection-end-column="13" />
         </state>
       </provider>
     </entry>

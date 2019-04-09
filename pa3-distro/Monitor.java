@@ -111,7 +111,7 @@ public class Monitor
 	}
 
 	public synchronized void requestShaker(int piTID) {
-        if(state[piTID] == States.EATING) {
+        //if(state[piTID] == States.EATING) {
             state[piTID] = States.REQUESTSHAKER;
             test(piTID, States.SHAKING);
             while(state[piTID] != States.SHAKING) {
@@ -121,7 +121,7 @@ public class Monitor
                     e.printStackTrace();
                 }
             }
-        }
+        //}
 	}
 
 	public synchronized void endShaker(int piTID) {
@@ -171,11 +171,11 @@ public class Monitor
 			}
 		}
 		else if(aState == States.SHAKING) {
-		    if(state[i] == States.REQUESTSHAKER && shakerCounter < MAX_SHAKER_NUMBER) {
-		        shakerCounter++;
-		        state[i] = States.SHAKING;
-		        notifyAll();
-            }
+			if (state[i] == States.REQUESTSHAKER && shakerCounter < MAX_SHAKER_NUMBER) {
+				shakerCounter++;
+				state[i] = States.SHAKING;
+				notifyAll();
+			}
         }
 	}
 }

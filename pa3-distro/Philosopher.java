@@ -1,5 +1,6 @@
 import common.BaseThread;
 
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -13,6 +14,7 @@ public class Philosopher extends BaseThread {
 	 * Max time an action can take (in milliseconds)
 	 */
 	private static final long TIME_TO_WASTE = 1000;
+	private Random r = new Random();
 
 	private void philSleep() {
 		try {
@@ -41,6 +43,10 @@ public class Philosopher extends BaseThread {
 		try {
 			System.out.println("Philosopher " + this.getTID() + " has started eating.");
 			yield();
+			DiningPhilosophers.soMonitor.requestShaker(getTID() - 1);
+			shake();
+			DiningPhilosophers.soMonitor.endShaker(getTID() - 1);
+			think();
 			sleep((long)(Math.random() * TIME_TO_WASTE)); // define variable TIME_TO_WASTE
 			yield();
 			System.out.println("Philosopher " + this.getTID() + " has finished eating.");
@@ -91,6 +97,21 @@ public class Philosopher extends BaseThread {
 		System.out.println("Philosopher " + this.getTID() + " has finished talking.");
 	}
 
+	private void shake() {
+		try {
+			System.out.println("Philosopher " + this.getTID() + " has started using the pepper shaker.");
+			yield();
+			sleep((long)(Math.random() * TIME_TO_WASTE)); // define variable TIME_TO_WASTE
+			yield();
+			System.out.println("Philosopher " + this.getTID() + " has finished using the pepper shaker.");
+		}
+		catch(InterruptedException e) {
+			System.err.println("Philosopher.think():");
+			DiningPhilosophers.reportException(e);
+			System.exit(1);
+		}
+	}
+
 	/**
 	 * No, this is not the act of running, just the overridden Thread.run()
 	 */
@@ -109,18 +130,25 @@ public class Philosopher extends BaseThread {
 			 * A decision is made at random whether this particular
 			 * philosopher is about to say something terribly useful.
 			 */
-			if(i % 2 == 0) {
+			int n = r.nextInt(10);
+			if(n == 4) {
 				DiningPhilosophers.soMonitor.requestTalk(getTID() - 1);
 				talk();
 				DiningPhilosophers.soMonitor.endTalk(getTID() - 1);
 				think();
 			}
-			else {
+			else if(n == 6) {
 				DiningPhilosophers.soMonitor.startSleep(getTID() - 1);
 				philSleep();
 				DiningPhilosophers.soMonitor.endSleep(getTID() - 1);
 				think();
 			}
+//			else if(n == 2) {
+//				DiningPhilosophers.soMonitor.requestShaker(getTID() - 1);
+//				shake();
+//				DiningPhilosophers.soMonitor.endShaker(getTID() - 1);
+//				think();
+//			}
 			yield();
 		}
 	} // run()
